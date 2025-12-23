@@ -30,7 +30,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../components/ui/dialog';
-import { billCategories, accounts } from '../data/mockData';
+import { billCategories } from '../data/mockData';
+import { useApp } from '../context/AppContext';
 
 const iconMap = {
   'zap': Zap,
@@ -42,6 +43,7 @@ const iconMap = {
 };
 
 const BillsPage = () => {
+  const { accounts, formatCurrency, payBill } = useApp();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedProvider, setSelectedProvider] = useState('');
   const [subscriberNo, setSubscriberNo] = useState('');
@@ -51,21 +53,20 @@ const BillsPage = () => {
   const [isPaying, setIsPaying] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const formatCurrency = (value) => {
-    return `${parseFloat(value || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺`;
-  };
-
   const queryBill = () => {
     setIsQuerying(true);
     setTimeout(() => {
-      setBillAmount(Math.floor(Math.random() * 500) + 100);
+      setBillAmount(Math.floor(Math.random() * 300) + 50);
       setIsQuerying(false);
     }, 1500);
   };
 
-  const payBill = () => {
+  const handlePayBill = () => {
+    if (!selectedAccount) return;
+    
     setIsPaying(true);
     setTimeout(() => {
+      payBill(selectedAccount, billAmount, selectedProvider, selectedCategory?.name);
       setIsPaying(false);
       setShowSuccess(true);
     }, 2000);
@@ -80,24 +81,24 @@ const BillsPage = () => {
   };
 
   const savedBills = [
-    { id: 1, category: 'Elektrik', provider: 'BEDAŞ', subscriberNo: '123456789', lastPayment: '15 Haz 2025', amount: 345.67 },
-    { id: 2, category: 'İnternet', provider: 'Türk Telekom', subscriberNo: '987654321', lastPayment: '10 Haz 2025', amount: 189.99 },
-    { id: 3, category: 'Doğalgaz', provider: 'İGDAŞ', subscriberNo: '456789123', lastPayment: '05 Haz 2025', amount: 567.89 },
+    { id: 1, category: 'Electricity', provider: 'PGE', subscriberNo: '123456789', lastPayment: '15 Jun 2025', amount: 189.45 },
+    { id: 2, category: 'Internet', provider: 'Orange', subscriberNo: '987654321', lastPayment: '10 Jun 2025', amount: 99.99 },
+    { id: 3, category: 'Gas', provider: 'PGNiG', subscriberNo: '456789123', lastPayment: '05 Jun 2025', amount: 234.56 },
   ];
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Fatura Öde</h1>
-        <p className="text-gray-500 text-sm mt-1">Tüm faturalarınızı tek yerden ödeyin</p>
+        <h1 className="text-2xl font-bold text-gray-900">Pay Bills</h1>
+        <p className="text-gray-500 text-sm mt-1">Pay all your bills in one place</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Bill Categories */}
         <Card className="lg:col-span-2 border-gray-100">
           <CardHeader>
-            <CardTitle className="text-lg">Fatura Türü Seçin</CardTitle>
+            <CardTitle className="text-lg">Select Bill Type</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mb-6">
@@ -133,10 +134,10 @@ const BillsPage = () => {
             {selectedCategory && (
               <div className="space-y-4 pt-4 border-t border-gray-100">
                 <div className="space-y-2">
-                  <Label>Kurum Seçin</Label>
+                  <Label>Select Provider</Label>
                   <Select value={selectedProvider} onValueChange={setSelectedProvider}>
                     <SelectTrigger className="h-12">
-                      <SelectValue placeholder="Kurum seçin" />
+                      <SelectValue placeholder="Select provider" />
                     </SelectTrigger>
                     <SelectContent className="bg-white">
                       {selectedCategory.providers.map((provider) => (
@@ -149,11 +150,11 @@ const BillsPage = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Abone / Müşteri Numarası</Label>
+                  <Label>Customer / Account Number</Label>
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <Input
-                      placeholder="Numaranızı girin"
+                      placeholder="Enter your account number"
                       value={subscriberNo}
                       onChange={(e) => setSubscriberNo(e.target.value)}
                       className="pl-10 h-12"
@@ -170,10 +171,10 @@ const BillsPage = () => {
                     {isQuerying ? (
                       <>
                         <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                        Sorgulanıyor...
+                        Fetching Bill...
                       </>
                     ) : (
-                      'Fatura Sorgula'
+                      'Check Bill'
                     )}
                   </Button>
                 ) : (
@@ -181,28 +182,28 @@ const BillsPage = () => {
                     {/* Bill Amount */}
                     <div className="p-4 bg-[#EC0000]/5 rounded-xl border border-[#EC0000]/20">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-gray-600">Fatura Tutarı</span>
+                        <span className="text-gray-600">Bill Amount</span>
                         <span className="text-2xl font-bold text-[#EC0000]">
                           {formatCurrency(billAmount)}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-sm text-gray-500">
                         <Calendar className="h-4 w-4" />
-                        <span>Son Ödeme: 25 Temmuz 2025</span>
+                        <span>Due Date: 25 July 2025</span>
                       </div>
                     </div>
 
                     {/* Payment Account */}
                     <div className="space-y-2">
-                      <Label>Ödeme Hesabı</Label>
+                      <Label>Pay From</Label>
                       <Select value={selectedAccount} onValueChange={setSelectedAccount}>
                         <SelectTrigger className="h-12">
-                          <SelectValue placeholder="Hesap seçin" />
+                          <SelectValue placeholder="Select account" />
                         </SelectTrigger>
                         <SelectContent className="bg-white">
                           {accounts.map((account) => (
                             <SelectItem key={account.id} value={account.id.toString()}>
-                              {account.name} - {formatCurrency(account.balance)}
+                              {account.name} - {formatCurrency(account.balance, account.currency)}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -211,16 +212,16 @@ const BillsPage = () => {
 
                     <Button
                       className="w-full h-12 bg-[#EC0000] hover:bg-[#CC0000] text-white"
-                      onClick={payBill}
+                      onClick={handlePayBill}
                       disabled={!selectedAccount || isPaying}
                     >
                       {isPaying ? (
                         <>
                           <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                          Ödeniyor...
+                          Processing...
                         </>
                       ) : (
-                        `${formatCurrency(billAmount)} Öde`
+                        `Pay ${formatCurrency(billAmount)}`
                       )}
                     </Button>
                   </div>
@@ -233,7 +234,7 @@ const BillsPage = () => {
         {/* Saved Bills */}
         <Card className="border-gray-100">
           <CardHeader>
-            <CardTitle className="text-lg">Kayıtlı Faturalar</CardTitle>
+            <CardTitle className="text-lg">Saved Bills</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -245,9 +246,9 @@ const BillsPage = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-lg bg-[#EC0000]/10 flex items-center justify-center">
-                        {bill.category === 'Elektrik' && <Zap className="h-4 w-4 text-[#EC0000]" />}
-                        {bill.category === 'İnternet' && <Wifi className="h-4 w-4 text-[#EC0000]" />}
-                        {bill.category === 'Doğalgaz' && <Flame className="h-4 w-4 text-[#EC0000]" />}
+                        {bill.category === 'Electricity' && <Zap className="h-4 w-4 text-[#EC0000]" />}
+                        {bill.category === 'Internet' && <Wifi className="h-4 w-4 text-[#EC0000]" />}
+                        {bill.category === 'Gas' && <Flame className="h-4 w-4 text-[#EC0000]" />}
                       </div>
                       <div>
                         <p className="font-medium text-gray-900 text-sm">{bill.provider}</p>
@@ -257,14 +258,14 @@ const BillsPage = () => {
                     <ChevronRight className="h-5 w-5 text-gray-400" />
                   </div>
                   <div className="flex justify-between items-center text-xs">
-                    <span className="text-gray-500">Son ödeme: {bill.lastPayment}</span>
+                    <span className="text-gray-500">Last paid: {bill.lastPayment}</span>
                     <span className="font-medium text-gray-900">{formatCurrency(bill.amount)}</span>
                   </div>
                 </div>
               ))}
             </div>
             <Button variant="outline" className="w-full mt-4 text-[#EC0000] border-[#EC0000]/30 hover:bg-[#EC0000]/5">
-              Tüm Faturaları Gör
+              View All Bills
             </Button>
           </CardContent>
         </Card>
@@ -278,31 +279,31 @@ const BillsPage = () => {
               <CheckCircle2 className="h-10 w-10 text-green-600" />
             </div>
             <DialogHeader>
-              <DialogTitle className="text-2xl text-center">Ödeme Başarılı!</DialogTitle>
+              <DialogTitle className="text-2xl text-center">Payment Successful!</DialogTitle>
             </DialogHeader>
             <p className="text-gray-500 mt-2">
-              {selectedProvider} faturanız başarıyla ödendi.
+              Your {selectedProvider} bill has been paid successfully.
             </p>
             <div className="w-full mt-6 p-4 bg-gray-50 rounded-xl">
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-500">Kurum</span>
+                <span className="text-gray-500">Provider</span>
                 <span className="font-medium">{selectedProvider}</span>
               </div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-500">Tutar</span>
+                <span className="text-gray-500">Amount</span>
                 <span className="font-medium">{formatCurrency(billAmount)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Tarih</span>
-                <span className="font-medium">{new Date().toLocaleDateString('tr-TR')}</span>
+                <span className="text-gray-500">Date</span>
+                <span className="font-medium">{new Date().toLocaleDateString('en-GB')}</span>
               </div>
             </div>
             <div className="flex gap-3 mt-6 w-full">
               <Button variant="outline" className="flex-1" onClick={resetForm}>
-                Yeni Ödeme
+                New Payment
               </Button>
               <Button className="flex-1 bg-[#EC0000] hover:bg-[#CC0000]" onClick={() => setShowSuccess(false)}>
-                Tamam
+                Done
               </Button>
             </div>
           </div>

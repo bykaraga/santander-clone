@@ -3,6 +3,9 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 
+// Context
+import { AppProvider } from "./context/AppContext";
+
 // Layout
 import Layout from "./components/layout/Layout";
 
@@ -17,24 +20,26 @@ import MorePage from "./pages/MorePage";
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Toaster position="top-center" richColors />
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/accounts" element={<AccountsPage />} />
-            <Route path="/cards" element={<CardsPage />} />
-            <Route path="/transfers" element={<TransfersPage />} />
-            <Route path="/bills" element={<BillsPage />} />
-            <Route path="/more" element={<MorePage />} />
-            <Route path="/savings" element={<MorePage />} />
-            <Route path="/investments" element={<MorePage />} />
-            <Route path="/security" element={<MorePage />} />
-            <Route path="/settings" element={<MorePage />} />
-            <Route path="/help" element={<MorePage />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
+      <AppProvider>
+        <BrowserRouter>
+          <Toaster position="top-center" richColors />
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/accounts" element={<AccountsPage />} />
+              <Route path="/cards" element={<CardsPage />} />
+              <Route path="/transfers" element={<TransfersPage />} />
+              <Route path="/bills" element={<BillsPage />} />
+              <Route path="/more" element={<MorePage />} />
+              <Route path="/savings" element={<MorePage />} />
+              <Route path="/investments" element={<MorePage />} />
+              <Route path="/security" element={<MorePage />} />
+              <Route path="/settings" element={<MorePage />} />
+              <Route path="/help" element={<MorePage />} />
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </AppProvider>
     </div>
   );
 }

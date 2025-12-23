@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   CreditCard,
   PiggyBank,
@@ -18,71 +18,71 @@ import { Card, CardContent } from '../components/ui/card';
 const menuItems = [
   {
     id: 'cards',
-    label: 'Kartlarım',
-    description: 'Kart yönetimi ve işlemler',
+    label: 'My Cards',
+    description: 'Card management and transactions',
     icon: CreditCard,
     path: '/cards'
   },
   {
     id: 'savings',
-    label: 'Birikim',
-    description: 'Tasarruf hedefleriniz',
+    label: 'Savings',
+    description: 'Your savings goals',
     icon: PiggyBank,
     path: '/savings'
   },
   {
     id: 'investments',
-    label: 'Yatırımlar',
-    description: 'Yatırım ürünleri',
+    label: 'Investments',
+    description: 'Investment products',
     icon: TrendingUp,
     path: '/investments'
   },
   {
     id: 'campaigns',
-    label: 'Kampanyalar',
-    description: 'Fırsatlar ve indirimler',
+    label: 'Promotions',
+    description: 'Offers and discounts',
     icon: Gift,
     path: '/campaigns'
   },
   {
     id: 'statements',
-    label: 'Hesap Özetleri',
-    description: 'Ekstreler ve raporlar',
+    label: 'Statements',
+    description: 'Account statements and reports',
     icon: FileText,
     path: '/statements'
   },
   {
     id: 'notifications',
-    label: 'Bildirim Ayarları',
-    description: 'Bildirim tercihleri',
+    label: 'Notification Settings',
+    description: 'Notification preferences',
     icon: Bell,
     path: '/notification-settings'
   },
   {
     id: 'profile',
-    label: 'Profil',
-    description: 'Kişisel bilgiler',
+    label: 'Profile',
+    description: 'Personal information',
     icon: User,
     path: '/profile'
   },
   {
     id: 'security',
-    label: 'Güvenlik',
-    description: 'Şifre ve güvenlik ayarları',
+    label: 'Security',
+    description: 'Password and security settings',
     icon: Shield,
     path: '/security'
   },
   {
     id: 'settings',
-    label: 'Ayarlar',
-    description: 'Uygulama ayarları',
+    label: 'Settings',
+    description: 'App settings',
     icon: Settings,
     path: '/settings'
   },
   {
     id: 'help',
-    label: 'Yardım',
-    description: 'Sıkça sorulan sorular',
+    label: 'Help',
+    description: 'Frequently asked questions',
     icon: HelpCircle,
     path: '/help'
   },
@@ -95,8 +95,8 @@ const MorePage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Daha Fazla</h1>
-        <p className="text-gray-500 text-sm mt-1">Tüm özellikler ve ayarlar</p>
+        <h1 className="text-2xl font-bold text-gray-900">More</h1>
+        <p className="text-gray-500 text-sm mt-1">All features and settings</p>
       </div>
 
       {/* Menu Grid */}
@@ -134,9 +134,9 @@ const MorePage = () => {
           <span className="text-white font-bold text-2xl">S</span>
         </div>
         <p className="text-gray-900 font-medium">Santander Mobile Banking</p>
-        <p className="text-xs text-gray-500 mt-1">Versiyon 3.2.1</p>
+        <p className="text-xs text-gray-500 mt-1">Version 3.2.1</p>
         <p className="text-xs text-gray-400 mt-4">
-          © 2025 Santander Türkiye. Tüm hakları saklıdır.
+          © 2025 Santander Poland. All rights reserved.
         </p>
       </div>
     </div>

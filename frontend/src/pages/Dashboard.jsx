@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Eye,
   EyeOff,
@@ -21,7 +21,7 @@ import {
   Music,
   Download,
   Gift,
-  Percent
+  Edit3
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -29,17 +29,13 @@ import { Badge } from '../components/ui/badge';
 import { Avatar, AvatarFallback } from '../components/ui/avatar';
 import { Progress } from '../components/ui/progress';
 import { ScrollArea, ScrollBar } from '../components/ui/scroll-area';
+import { useNavigate } from 'react-router-dom';
 import {
-  accounts,
-  cards,
-  transactions,
   quickActions,
-  favoriteContacts,
   campaigns,
   exchangeRates,
-  spendingByCategory,
-  userData
 } from '../data/mockData';
+import { useApp } from '../context/AppContext';
 
 const iconMap = {
   'wallet': Wallet,
@@ -60,25 +56,27 @@ const iconMap = {
 };
 
 const Dashboard = () => {
-  const [showBalance, setShowBalance] = useState(true);
-  const totalBalance = accounts.reduce((sum, acc) => {
-    if (acc.currency === 'TRY') return sum + acc.balance;
-    if (acc.currency === 'EUR') return sum + (acc.balance * 35.25);
-    return sum;
-  }, 0);
-
-  const formatCurrency = (amount, currency = 'TRY') => {
-    const symbol = currency === 'TRY' ? '₺' : currency === 'EUR' ? '€' : '$';
-    return `${amount.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ${symbol}`;
-  };
+  const navigate = useNavigate();
+  const {
+    currentUser,
+    accounts,
+    cards,
+    transactions,
+    favoriteContacts,
+    spendingByCategory,
+    totalBalance,
+    showBalance,
+    setShowBalance,
+    formatCurrency
+  } = useApp();
 
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Merhaba, {userData.firstName}!</h1>
-          <p className="text-gray-500 text-sm mt-1">Son giriş: {userData.lastLogin}</p>
+          <h1 className="text-2xl font-bold text-gray-900">Hello, {currentUser.firstName}!</h1>
+          <p className="text-gray-500 text-sm mt-1">Last login: {currentUser.lastLogin}</p>
         </div>
         <Button
           variant="outline"
@@ -86,7 +84,7 @@ const Dashboard = () => {
           className="flex items-center gap-2 text-gray-600 border-gray-200 hover:bg-gray-50"
         >
           {showBalance ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-          <span>{showBalance ? 'Bakiyeyi Gizle' : 'Bakiyeyi Göster'}</span>
+          <span>{showBalance ? 'Hide Balance' : 'Show Balance'}</span>
         </Button>
       </div>
 
@@ -95,20 +93,23 @@ const Dashboard = () => {
         <CardContent className="p-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              <p className="text-red-100 text-sm font-medium">Toplam Varlık</p>
+              <p className="text-red-100 text-sm font-medium">Total Assets</p>
               <p className="text-3xl md:text-4xl font-bold mt-2">
-                {showBalance ? formatCurrency(totalBalance) : '•••••• ₺'}
+                {showBalance ? formatCurrency(totalBalance) : '•••••• zł'}
               </p>
-              <p className="text-red-100 text-sm mt-2">3 hesap toplamı</p>
+              <p className="text-red-100 text-sm mt-2">{accounts.length} accounts total</p>
             </div>
             <div className="flex gap-3">
-              <Button className="bg-white text-[#EC0000] hover:bg-red-50 font-semibold">
+              <Button 
+                className="bg-white text-[#EC0000] hover:bg-red-50 font-semibold"
+                onClick={() => navigate('/transfers')}
+              >
                 <Send className="h-4 w-4 mr-2" />
-                Para Gönder
+                Send Money
               </Button>
               <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
                 <Download className="h-4 w-4 mr-2" />
-                Para Al
+                Receive
               </Button>
             </div>
           </div>
@@ -117,13 +118,21 @@ const Dashboard = () => {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Hızlı İşlemler</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
         <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
           {quickActions.map((action) => {
             const Icon = iconMap[action.icon] || Send;
+            const paths = {
+              'Send Money': '/transfers',
+              'Pay Bills': '/bills',
+              'Cards': '/cards',
+              'Invest': '/investments',
+              'Loan': '/more'
+            };
             return (
               <button
                 key={action.id}
+                onClick={() => paths[action.name] && navigate(paths[action.name])}
                 className="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-gray-100 hover:border-[#EC0000]/30 hover:shadow-lg hover:shadow-red-100/50 transition-all duration-300 group"
               >
                 <div className="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center group-hover:bg-[#EC0000] transition-colors duration-300">
@@ -141,9 +150,14 @@ const Dashboard = () => {
         {/* Accounts */}
         <Card className="border-gray-100">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-lg font-semibold">Hesaplarım</CardTitle>
-            <Button variant="ghost" size="sm" className="text-[#EC0000] hover:text-[#CC0000] hover:bg-red-50">
-              Tümü <ChevronRight className="h-4 w-4 ml-1" />
+            <CardTitle className="text-lg font-semibold">My Accounts</CardTitle>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-[#EC0000] hover:text-[#CC0000] hover:bg-red-50"
+              onClick={() => navigate('/accounts')}
+            >
+              View All <ChevronRight className="h-4 w-4 ml-1" />
             </Button>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -152,6 +166,7 @@ const Dashboard = () => {
               return (
                 <div
                   key={account.id}
+                  onClick={() => navigate('/accounts')}
                   className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
@@ -175,15 +190,21 @@ const Dashboard = () => {
         {/* Cards */}
         <Card className="border-gray-100">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-lg font-semibold">Kartlarım</CardTitle>
-            <Button variant="ghost" size="sm" className="text-[#EC0000] hover:text-[#CC0000] hover:bg-red-50">
-              Tümü <ChevronRight className="h-4 w-4 ml-1" />
+            <CardTitle className="text-lg font-semibold">My Cards</CardTitle>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-[#EC0000] hover:text-[#CC0000] hover:bg-red-50"
+              onClick={() => navigate('/cards')}
+            >
+              View All <ChevronRight className="h-4 w-4 ml-1" />
             </Button>
           </CardHeader>
           <CardContent className="space-y-3">
             {cards.slice(0, 2).map((card) => (
               <div
                 key={card.id}
+                onClick={() => navigate('/cards')}
                 className={`p-4 rounded-xl cursor-pointer transition-all hover:shadow-lg ${
                   card.color === 'platinum'
                     ? 'bg-gradient-to-br from-gray-800 to-gray-900 text-white'
@@ -200,14 +221,14 @@ const Dashboard = () => {
                   <Badge className={`${
                     card.status === 'active' ? 'bg-green-500/20 text-green-200' : 'bg-red-500/20 text-red-200'
                   }`}>
-                    {card.status === 'active' ? 'Aktif' : 'Pasif'}
+                    {card.status === 'active' ? 'Active' : 'Locked'}
                   </Badge>
                 </div>
                 <p className="font-mono text-lg tracking-wider mb-4">{card.number}</p>
                 {card.limit && (
                   <div>
                     <div className="flex justify-between text-xs mb-1">
-                      <span>Kullanılan: {formatCurrency(card.used)}</span>
+                      <span>Used: {formatCurrency(card.used)}</span>
                       <span>Limit: {formatCurrency(card.limit)}</span>
                     </div>
                     <Progress value={(card.used / card.limit) * 100} className="h-1.5 bg-white/20" />
@@ -222,9 +243,14 @@ const Dashboard = () => {
       {/* Favorite Contacts */}
       <Card className="border-gray-100">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-lg font-semibold">Sık Kullanılanlar</CardTitle>
-          <Button variant="ghost" size="sm" className="text-[#EC0000] hover:text-[#CC0000] hover:bg-red-50">
-            Düzenle
+          <CardTitle className="text-lg font-semibold">Frequent Contacts</CardTitle>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-[#EC0000] hover:text-[#CC0000] hover:bg-red-50"
+            onClick={() => navigate('/transfers')}
+          >
+            <Edit3 className="h-4 w-4 mr-1" /> Edit
           </Button>
         </CardHeader>
         <CardContent>
@@ -233,6 +259,7 @@ const Dashboard = () => {
               {favoriteContacts.map((contact) => (
                 <button
                   key={contact.id}
+                  onClick={() => navigate('/transfers')}
                   className="flex flex-col items-center gap-2 min-w-[80px] p-3 rounded-xl hover:bg-gray-50 transition-colors"
                 >
                   <Avatar className="h-12 w-12 bg-[#EC0000]">
@@ -245,11 +272,14 @@ const Dashboard = () => {
                   </span>
                 </button>
               ))}
-              <button className="flex flex-col items-center gap-2 min-w-[80px] p-3 rounded-xl hover:bg-gray-50 transition-colors">
+              <button 
+                onClick={() => navigate('/transfers')}
+                className="flex flex-col items-center gap-2 min-w-[80px] p-3 rounded-xl hover:bg-gray-50 transition-colors"
+              >
                 <div className="h-12 w-12 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center">
                   <span className="text-2xl text-gray-400">+</span>
                 </div>
-                <span className="text-xs font-medium text-gray-500">Ekle</span>
+                <span className="text-xs font-medium text-gray-500">Add</span>
               </button>
             </div>
             <ScrollBar orientation="horizontal" />
@@ -262,9 +292,14 @@ const Dashboard = () => {
         {/* Recent Transactions */}
         <Card className="lg:col-span-2 border-gray-100">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-lg font-semibold">Son İşlemler</CardTitle>
-            <Button variant="ghost" size="sm" className="text-[#EC0000] hover:text-[#CC0000] hover:bg-red-50">
-              Tümü <ChevronRight className="h-4 w-4 ml-1" />
+            <CardTitle className="text-lg font-semibold">Recent Transactions</CardTitle>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-[#EC0000] hover:text-[#CC0000] hover:bg-red-50"
+              onClick={() => navigate('/accounts')}
+            >
+              View All <ChevronRight className="h-4 w-4 ml-1" />
             </Button>
           </CardHeader>
           <CardContent>
@@ -304,13 +339,13 @@ const Dashboard = () => {
         {/* Exchange Rates */}
         <Card className="border-gray-100">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg font-semibold">Döviz Kurları</CardTitle>
+            <CardTitle className="text-lg font-semibold">Exchange Rates</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {exchangeRates.map((rate) => (
               <div key={rate.currency} className="p-3 bg-gray-50 rounded-xl">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-medium text-gray-900">{rate.currency}/TRY</span>
+                  <span className="font-medium text-gray-900">{rate.currency}/PLN</span>
                   <span className={`text-xs flex items-center gap-1 ${
                     rate.change > 0 ? 'text-green-600' : 'text-red-600'
                   }`}>
@@ -319,8 +354,8 @@ const Dashboard = () => {
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Alış: <span className="text-gray-900 font-medium">{rate.buy.toFixed(2)}</span></span>
-                  <span className="text-gray-500">Satış: <span className="text-gray-900 font-medium">{rate.sell.toFixed(2)}</span></span>
+                  <span className="text-gray-500">Buy: <span className="text-gray-900 font-medium">{rate.buy.toFixed(2)}</span></span>
+                  <span className="text-gray-500">Sell: <span className="text-gray-900 font-medium">{rate.sell.toFixed(2)}</span></span>
                 </div>
               </div>
             ))}
@@ -330,7 +365,7 @@ const Dashboard = () => {
 
       {/* Campaigns */}
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Kampanyalar</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Promotions</h2>
         <ScrollArea className="w-full">
           <div className="flex gap-4 pb-4">
             {campaigns.map((campaign) => (
@@ -344,7 +379,7 @@ const Dashboard = () => {
                   <h3 className="font-semibold text-gray-900 mb-1">{campaign.title}</h3>
                   <p className="text-sm text-gray-500 mb-3">{campaign.description}</p>
                   <Badge variant="outline" className="text-xs text-[#EC0000] border-[#EC0000]/30">
-                    {campaign.endDate}'e kadar
+                    Until {campaign.endDate}
                   </Badge>
                 </CardContent>
               </Card>
@@ -357,8 +392,8 @@ const Dashboard = () => {
       {/* Spending Analysis */}
       <Card className="border-gray-100">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-lg font-semibold">Aylık Harcama Analizi</CardTitle>
-          <Badge variant="outline" className="text-gray-500">Temmuz 2025</Badge>
+          <CardTitle className="text-lg font-semibold">Monthly Spending Analysis</CardTitle>
+          <Badge variant="outline" className="text-gray-500">July 2025</Badge>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-6">
@@ -402,7 +437,7 @@ const Dashboard = () => {
                   <p className="text-2xl font-bold text-gray-900">
                     {formatCurrency(spendingByCategory.reduce((sum, item) => sum + item.amount, 0))}
                   </p>
-                  <p className="text-sm text-gray-500">Toplam Harcama</p>
+                  <p className="text-sm text-gray-500">Total Spent</p>
                 </div>
               </div>
             </div>

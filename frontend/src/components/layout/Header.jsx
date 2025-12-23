@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bell, Menu, X, User, Settings, LogOut, ChevronDown } from 'lucide-react';
+import { Bell, Menu, X, User, Settings, LogOut, ChevronDown, RefreshCw } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import {
@@ -10,10 +10,12 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { Badge } from '../ui/badge';
-import { userData, notifications } from '../../data/mockData';
+import { notifications } from '../../data/mockData';
+import { useApp } from '../../context/AppContext';
 
 const Header = ({ onMenuClick, isMobileMenuOpen }) => {
   const [showNotifications, setShowNotifications] = useState(false);
+  const { currentUser, availableUsers, switchUser, resetToDefaults } = useApp();
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
@@ -55,7 +57,7 @@ const Header = ({ onMenuClick, isMobileMenuOpen }) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-80 bg-white">
               <div className="p-3 border-b border-gray-100">
-                <h3 className="font-semibold text-gray-900">Bildirimler</h3>
+                <h3 className="font-semibold text-gray-900">Notifications</h3>
               </div>
               <div className="max-h-80 overflow-y-auto">
                 {notifications.map((notification) => (
@@ -80,7 +82,7 @@ const Header = ({ onMenuClick, isMobileMenuOpen }) => {
               </div>
               <div className="p-2">
                 <Button variant="ghost" className="w-full text-[#EC0000] hover:text-[#CC0000] hover:bg-red-50 text-sm">
-                  Tüm Bildirimleri Gör
+                  View All Notifications
                 </Button>
               </div>
             </DropdownMenuContent>
@@ -92,32 +94,64 @@ const Header = ({ onMenuClick, isMobileMenuOpen }) => {
               <Button variant="ghost" className="flex items-center gap-2 hover:bg-gray-100 px-2">
                 <Avatar className="h-8 w-8 bg-[#EC0000]">
                   <AvatarFallback className="bg-[#EC0000] text-white text-sm font-medium">
-                    {userData.avatar}
+                    {currentUser.avatar}
                   </AvatarFallback>
                 </Avatar>
                 <span className="hidden md:block text-sm font-medium text-gray-700">
-                  {userData.firstName}
+                  {currentUser.firstName}
                 </span>
                 <ChevronDown className="h-4 w-4 text-gray-500 hidden md:block" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 bg-white">
+            <DropdownMenuContent align="end" className="w-64 bg-white">
               <div className="p-3 border-b border-gray-100">
-                <p className="font-medium text-gray-900">{userData.name}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{userData.email}</p>
+                <p className="font-medium text-gray-900">{currentUser.name}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{currentUser.email}</p>
               </div>
+              
+              {/* Switch User Section */}
+              <div className="p-2 border-b border-gray-100">
+                <p className="text-xs font-semibold text-gray-400 uppercase px-2 mb-2">Switch Account</p>
+                {availableUsers.map((user) => (
+                  <DropdownMenuItem
+                    key={user.id}
+                    onClick={() => switchUser(user.id)}
+                    className={`flex items-center gap-2 cursor-pointer ${
+                      currentUser.id === user.id ? 'bg-red-50' : ''
+                    }`}
+                  >
+                    <Avatar className="h-6 w-6 bg-[#EC0000]">
+                      <AvatarFallback className="bg-[#EC0000] text-white text-xs">
+                        {user.avatar}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm">{user.name}</span>
+                    {currentUser.id === user.id && (
+                      <Badge className="ml-auto bg-[#EC0000] text-white text-xs">Active</Badge>
+                    )}
+                  </DropdownMenuItem>
+                ))}
+              </div>
+
               <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
                 <User className="h-4 w-4" />
-                <span>Profilim</span>
+                <span>Profile</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
                 <Settings className="h-4 w-4" />
-                <span>Ayarlar</span>
+                <span>Settings</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                onClick={resetToDefaults}
+                className="flex items-center gap-2 cursor-pointer text-orange-600 focus:text-orange-600"
+              >
+                <RefreshCw className="h-4 w-4" />
+                <span>Reset Data</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="flex items-center gap-2 cursor-pointer text-red-600 focus:text-red-600">
                 <LogOut className="h-4 w-4" />
-                <span>Çıkış Yap</span>
+                <span>Sign Out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

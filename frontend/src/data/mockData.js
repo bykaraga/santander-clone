@@ -1,88 +1,119 @@
-// Mock Data for Santander Bank Clone
+// Mock Data for Santander Bank Clone - Poland Edition
 
-export const userData = {
-  name: "Ahmet Yılmaz",
-  firstName: "Ahmet",
-  avatar: "AY",
-  email: "ahmet.yilmaz@email.com",
-  phone: "+90 532 XXX XX XX",
-  lastLogin: "15 Tem 2025, 14:32"
+export const defaultUserData = {
+  id: 1,
+  name: "Jan Kowalski",
+  firstName: "Jan",
+  avatar: "JK",
+  email: "jan.kowalski@email.pl",
+  phone: "+48 512 XXX XXX",
+  lastLogin: "15 Jul 2025, 14:32"
 };
 
-export const accounts = [
+export const availableUsers = [
   {
     id: 1,
-    name: "Ana Hesap",
-    type: "Vadesiz Hesap",
-    iban: "TR12 0012 3456 7890 1234 5678 90",
-    balance: 24567.89,
-    currency: "TRY",
+    name: "Jan Kowalski",
+    firstName: "Jan",
+    avatar: "JK",
+    email: "jan.kowalski@email.pl",
+    phone: "+48 512 XXX XXX",
+    lastLogin: "15 Jul 2025, 14:32"
+  },
+  {
+    id: 2,
+    name: "Anna Nowak",
+    firstName: "Anna",
+    avatar: "AN",
+    email: "anna.nowak@email.pl",
+    phone: "+48 601 XXX XXX",
+    lastLogin: "15 Jul 2025, 10:15"
+  },
+  {
+    id: 3,
+    name: "Piotr Wisniewski",
+    firstName: "Piotr",
+    avatar: "PW",
+    email: "piotr.wisniewski@email.pl",
+    phone: "+48 505 XXX XXX",
+    lastLogin: "14 Jul 2025, 18:45"
+  }
+];
+
+export const defaultAccounts = [
+  {
+    id: 1,
+    name: "Main Account",
+    type: "Current Account",
+    iban: "PL12 1090 1234 5678 9012 3456 7890",
+    balance: 12567.89,
+    currency: "PLN",
     icon: "wallet"
   },
   {
     id: 2,
-    name: "Euro Hesabı",
-    type: "Döviz Hesabı",
-    iban: "TR98 0012 3456 7890 1234 5678 91",
-    balance: 3250.00,
+    name: "Euro Account",
+    type: "Foreign Currency",
+    iban: "PL98 1090 1234 5678 9012 3456 7891",
+    balance: 2150.00,
     currency: "EUR",
     icon: "landmark"
   },
   {
     id: 3,
-    name: "Birikim Hesabı",
-    type: "Vadeli Hesap",
-    iban: "TR45 0012 3456 7890 1234 5678 92",
-    balance: 85000.00,
-    currency: "TRY",
+    name: "Savings Account",
+    type: "Term Deposit",
+    iban: "PL45 1090 1234 5678 9012 3456 7892",
+    balance: 45000.00,
+    currency: "PLN",
     icon: "piggy-bank"
   }
 ];
 
-export const cards = [
+export const defaultCards = [
   {
     id: 1,
     name: "Santander Platinum",
-    type: "Kredi Kartı",
+    type: "Credit Card",
     number: "**** **** **** 4582",
     expiryDate: "12/27",
-    limit: 50000,
-    used: 12450,
-    available: 37550,
+    limit: 25000,
+    used: 6450,
+    available: 18550,
     status: "active",
     color: "platinum"
   },
   {
     id: 2,
     name: "Santander Gold",
-    type: "Banka Kartı",
+    type: "Debit Card",
     number: "**** **** **** 7891",
     expiryDate: "08/26",
-    linkedAccount: "Ana Hesap",
+    linkedAccount: "Main Account",
     status: "active",
     color: "gold"
   },
   {
     id: 3,
     name: "Santander Virtual",
-    type: "Sanal Kart",
+    type: "Virtual Card",
     number: "**** **** **** 2345",
     expiryDate: "03/26",
-    limit: 5000,
-    used: 890,
-    available: 4110,
+    limit: 2500,
+    used: 445,
+    available: 2055,
     status: "active",
     color: "virtual"
   }
 ];
 
-export const transactions = [
+export const defaultTransactions = [
   {
     id: 1,
     title: "Netflix",
-    category: "Eğlence",
-    amount: -89.99,
-    date: "15 Tem 2025",
+    category: "Entertainment",
+    amount: -43.99,
+    date: "15 Jul 2025",
     time: "09:15",
     type: "expense",
     icon: "play-circle",
@@ -90,10 +121,10 @@ export const transactions = [
   },
   {
     id: 2,
-    title: "Maaş Ödemesi",
-    category: "Gelir",
-    amount: 28500.00,
-    date: "14 Tem 2025",
+    title: "Salary Payment",
+    category: "Income",
+    amount: 8500.00,
+    date: "14 Jul 2025",
     time: "00:01",
     type: "income",
     icon: "building",
@@ -101,10 +132,10 @@ export const transactions = [
   },
   {
     id: 3,
-    title: "Migros Market",
-    category: "Market",
-    amount: -456.78,
-    date: "13 Tem 2025",
+    title: "Biedronka Market",
+    category: "Groceries",
+    amount: -234.56,
+    date: "13 Jul 2025",
     time: "18:42",
     type: "expense",
     icon: "shopping-cart",
@@ -112,10 +143,10 @@ export const transactions = [
   },
   {
     id: 4,
-    title: "EFT - Ayşe Demir",
+    title: "Transfer - Maria Lewandowska",
     category: "Transfer",
-    amount: -1500.00,
-    date: "12 Tem 2025",
+    amount: -750.00,
+    date: "12 Jul 2025",
     time: "14:30",
     type: "transfer",
     icon: "send",
@@ -123,10 +154,10 @@ export const transactions = [
   },
   {
     id: 5,
-    title: "Elektrik Faturası",
-    category: "Fatura",
-    amount: -345.67,
-    date: "11 Tem 2025",
+    title: "Electricity Bill",
+    category: "Bills",
+    amount: -189.45,
+    date: "11 Jul 2025",
     time: "10:00",
     type: "expense",
     icon: "zap",
@@ -134,10 +165,10 @@ export const transactions = [
   },
   {
     id: 6,
-    title: "Shell Benzin",
-    category: "Ulaşım",
-    amount: -890.00,
-    date: "10 Tem 2025",
+    title: "Orlen Fuel",
+    category: "Transport",
+    amount: -320.00,
+    date: "10 Jul 2025",
     time: "16:22",
     type: "expense",
     icon: "fuel",
@@ -146,9 +177,9 @@ export const transactions = [
   {
     id: 7,
     title: "Spotify Premium",
-    category: "Eğlence",
-    amount: -49.99,
-    date: "09 Tem 2025",
+    category: "Entertainment",
+    amount: -23.99,
+    date: "09 Jul 2025",
     time: "00:00",
     type: "expense",
     icon: "music",
@@ -156,10 +187,10 @@ export const transactions = [
   },
   {
     id: 8,
-    title: "Gelen EFT",
+    title: "Incoming Transfer",
     category: "Transfer",
-    amount: 2500.00,
-    date: "08 Tem 2025",
+    amount: 1200.00,
+    date: "08 Jul 2025",
     time: "11:45",
     type: "income",
     icon: "download",
@@ -168,60 +199,60 @@ export const transactions = [
 ];
 
 export const quickActions = [
-  { id: 1, name: "Para Gönder", icon: "send", color: "#EC0000" },
-  { id: 2, name: "Fatura Öde", icon: "file-text", color: "#EC0000" },
-  { id: 3, name: "QR Öde", icon: "qr-code", color: "#EC0000" },
-  { id: 4, name: "Kart İşlemleri", icon: "credit-card", color: "#EC0000" },
-  { id: 5, name: "Yatırım", icon: "trending-up", color: "#EC0000" },
-  { id: 6, name: "Kredi", icon: "landmark", color: "#EC0000" }
+  { id: 1, name: "Send Money", icon: "send", color: "#EC0000" },
+  { id: 2, name: "Pay Bills", icon: "file-text", color: "#EC0000" },
+  { id: 3, name: "QR Pay", icon: "qr-code", color: "#EC0000" },
+  { id: 4, name: "Cards", icon: "credit-card", color: "#EC0000" },
+  { id: 5, name: "Invest", icon: "trending-up", color: "#EC0000" },
+  { id: 6, name: "Loan", icon: "landmark", color: "#EC0000" }
 ];
 
 export const billCategories = [
-  { id: 1, name: "Elektrik", icon: "zap", providers: ["BEDAŞ", "CK Boğaziçi", "AYEDAŞ"] },
-  { id: 2, name: "Su", icon: "droplets", providers: ["İSKİ", "ASKİ"] },
-  { id: 3, name: "Doğalgaz", icon: "flame", providers: ["İGDAŞ", "ESGAZ"] },
-  { id: 4, name: "İnternet", icon: "wifi", providers: ["Türk Telekom", "Superonline", "TurkNet"] },
-  { id: 5, name: "Telefon", icon: "smartphone", providers: ["Turkcell", "Vodafone", "Türk Telekom"] },
-  { id: 6, name: "TV", icon: "tv", providers: ["Digiturk", "D-Smart", "Tivibu"] }
+  { id: 1, name: "Electricity", icon: "zap", providers: ["PGE", "Tauron", "Enea", "Energa"] },
+  { id: 2, name: "Water", icon: "droplets", providers: ["MPWiK Warszawa", "Aquanet", "GPW"] },
+  { id: 3, name: "Gas", icon: "flame", providers: ["PGNiG", "Fortum", "E.ON"] },
+  { id: 4, name: "Internet", icon: "wifi", providers: ["Orange", "UPC", "Netia", "Play"] },
+  { id: 5, name: "Phone", icon: "smartphone", providers: ["Orange", "Play", "T-Mobile", "Plus"] },
+  { id: 6, name: "TV", icon: "tv", providers: ["Canal+", "Polsat Box", "Player"] }
 ];
 
-export const favoriteContacts = [
-  { id: 1, name: "Ayşe Demir", iban: "TR12 ****90", avatar: "AD" },
-  { id: 2, name: "Mehmet Kaya", iban: "TR34 ****56", avatar: "MK" },
-  { id: 3, name: "Zeynep Öz", iban: "TR78 ****12", avatar: "ZÖ" },
-  { id: 4, name: "Can Yıldız", iban: "TR90 ****78", avatar: "CY" }
+export const defaultFavoriteContacts = [
+  { id: 1, name: "Maria Lewandowska", iban: "PL12 ****90", avatar: "ML" },
+  { id: 2, name: "Tomasz Zielinski", iban: "PL34 ****56", avatar: "TZ" },
+  { id: 3, name: "Katarzyna Dabrowska", iban: "PL78 ****12", avatar: "KD" },
+  { id: 4, name: "Michal Wojcik", iban: "PL90 ****78", avatar: "MW" }
 ];
 
 export const notifications = [
   {
     id: 1,
-    title: "Kart Harcaması",
-    message: "Platinum kartınızdan 89.99 TL harcama yapıldı.",
-    time: "2 saat önce",
+    title: "Card Transaction",
+    message: "43.99 PLN spent from your Platinum card.",
+    time: "2 hours ago",
     read: false,
     type: "transaction"
   },
   {
     id: 2,
-    title: "Maaş Yatırıldı",
-    message: "Ana hesabınıza 28,500.00 TL maaş ödemesi yapıldı.",
-    time: "1 gün önce",
+    title: "Salary Received",
+    message: "8,500.00 PLN salary payment received.",
+    time: "1 day ago",
     read: false,
     type: "income"
   },
   {
     id: 3,
-    title: "Fatura Hatırlatması",
-    message: "Elektrik faturanızın son ödeme tarihi 3 gün sonra.",
-    time: "2 gün önce",
+    title: "Bill Reminder",
+    message: "Electricity bill due in 3 days.",
+    time: "2 days ago",
     read: true,
     type: "reminder"
   },
   {
     id: 4,
-    title: "Kampanya",
-    message: "Market alışverişlerinizde %10 nakit iade fırsatı!",
-    time: "3 gün önce",
+    title: "Promotion",
+    message: "Get 10% cashback on grocery shopping!",
+    time: "3 days ago",
     read: true,
     type: "promo"
   }
@@ -230,37 +261,37 @@ export const notifications = [
 export const campaigns = [
   {
     id: 1,
-    title: "Market Kampanyası",
-    description: "Seçili marketlerde %10 nakit iade",
-    endDate: "31 Tem 2025",
+    title: "Grocery Cashback",
+    description: "10% cashback at selected supermarkets",
+    endDate: "31 Jul 2025",
     image: "market"
   },
   {
     id: 2,
-    title: "Akaryakıt Fırsatı",
-    description: "Akaryakıt istasyonlarında litre başına 1 TL indirim",
-    endDate: "15 Ağu 2025",
+    title: "Fuel Discount",
+    description: "0.20 PLN discount per liter at Orlen",
+    endDate: "15 Aug 2025",
     image: "fuel"
   },
   {
     id: 3,
-    title: "Restoran Keyfi",
-    description: "Anlaşmalı restoranlarda %15 indirim",
-    endDate: "30 Ağu 2025",
+    title: "Restaurant Offer",
+    description: "15% off at partner restaurants",
+    endDate: "30 Aug 2025",
     image: "restaurant"
   }
 ];
 
 export const exchangeRates = [
-  { currency: "USD", buy: 32.45, sell: 32.65, change: 0.23 },
-  { currency: "EUR", buy: 35.12, sell: 35.38, change: -0.15 },
-  { currency: "GBP", buy: 41.20, sell: 41.55, change: 0.42 }
+  { currency: "EUR", buy: 4.28, sell: 4.35, change: 0.15 },
+  { currency: "USD", buy: 3.92, sell: 3.99, change: -0.08 },
+  { currency: "GBP", buy: 4.98, sell: 5.08, change: 0.22 }
 ];
 
-export const spendingByCategory = [
-  { category: "Market", amount: 3456, percentage: 35, color: "#EC0000" },
-  { category: "Ulaşım", amount: 1890, percentage: 19, color: "#FF4444" },
-  { category: "Fatura", amount: 1567, percentage: 16, color: "#FF6666" },
-  { category: "Eğlence", amount: 980, percentage: 10, color: "#FF8888" },
-  { category: "Diğer", amount: 1980, percentage: 20, color: "#FFAAAA" }
+export const defaultSpendingByCategory = [
+  { category: "Groceries", amount: 1456, percentage: 35, color: "#EC0000" },
+  { category: "Transport", amount: 780, percentage: 19, color: "#FF4444" },
+  { category: "Bills", amount: 650, percentage: 16, color: "#FF6666" },
+  { category: "Entertainment", amount: 420, percentage: 10, color: "#FF8888" },
+  { category: "Other", amount: 830, percentage: 20, color: "#FFAAAA" }
 ];

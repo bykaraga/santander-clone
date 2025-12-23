@@ -4,11 +4,11 @@ import { Home, CreditCard, ArrowLeftRight, FileText, MoreHorizontal } from 'luci
 import { cn } from '../../lib/utils';
 
 const navItems = [
-  { id: 'home', label: 'Ana Sayfa', icon: Home, path: '/' },
-  { id: 'accounts', label: 'Hesaplar', icon: CreditCard, path: '/accounts' },
+  { id: 'home', label: 'Home', icon: Home, path: '/' },
+  { id: 'accounts', label: 'Accounts', icon: CreditCard, path: '/accounts' },
   { id: 'transfers', label: 'Transfer', icon: ArrowLeftRight, path: '/transfers' },
-  { id: 'bills', label: 'Faturalar', icon: FileText, path: '/bills' },
-  { id: 'more', label: 'Daha Fazla', icon: MoreHorizontal, path: '/more' },
+  { id: 'bills', label: 'Bills', icon: FileText, path: '/bills' },
+  { id: 'more', label: 'More', icon: MoreHorizontal, path: '/more' },
 ];
 
 const BottomNav = () => {

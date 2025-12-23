@@ -15,19 +15,19 @@ import {
 import { cn } from '../../lib/utils';
 
 const menuItems = [
-  { id: 'home', label: 'Ana Sayfa', icon: Home, path: '/' },
-  { id: 'accounts', label: 'Hesaplarım', icon: Landmark, path: '/accounts' },
-  { id: 'cards', label: 'Kartlarım', icon: CreditCard, path: '/cards' },
-  { id: 'transfers', label: 'Transferler', icon: ArrowLeftRight, path: '/transfers' },
-  { id: 'bills', label: 'Fatura Öde', icon: FileText, path: '/bills' },
-  { id: 'savings', label: 'Birikim', icon: PiggyBank, path: '/savings' },
-  { id: 'investments', label: 'Yatırımlar', icon: TrendingUp, path: '/investments' },
+  { id: 'home', label: 'Home', icon: Home, path: '/' },
+  { id: 'accounts', label: 'Accounts', icon: Landmark, path: '/accounts' },
+  { id: 'cards', label: 'Cards', icon: CreditCard, path: '/cards' },
+  { id: 'transfers', label: 'Transfers', icon: ArrowLeftRight, path: '/transfers' },
+  { id: 'bills', label: 'Pay Bills', icon: FileText, path: '/bills' },
+  { id: 'savings', label: 'Savings', icon: PiggyBank, path: '/savings' },
+  { id: 'investments', label: 'Investments', icon: TrendingUp, path: '/investments' },
 ];
 
 const bottomMenuItems = [
-  { id: 'security', label: 'Güvenlik', icon: Shield, path: '/security' },
-  { id: 'settings', label: 'Ayarlar', icon: Settings, path: '/settings' },
-  { id: 'help', label: 'Yardım', icon: HelpCircle, path: '/help' },
+  { id: 'security', label: 'Security', icon: Shield, path: '/security' },
+  { id: 'settings', label: 'Settings', icon: Settings, path: '/settings' },
+  { id: 'help', label: 'Help', icon: HelpCircle, path: '/help' },
 ];
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -81,7 +81,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           {/* Main Menu */}
           <nav className="flex-1 space-y-1">
             <p className="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-              Menü
+              Menu
             </p>
             {menuItems.map((item) => (
               <MenuItem key={item.id} item={item} />
@@ -91,7 +91,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           {/* Bottom Menu */}
           <div className="border-t border-gray-100 pt-4 space-y-1">
             <p className="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-              Diğer
+              Other
             </p>
             {bottomMenuItems.map((item) => (
               <MenuItem key={item.id} item={item} />
@@ -100,7 +100,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
           {/* App Version */}
           <div className="mt-4 px-4 py-2">
-            <p className="text-xs text-gray-400 text-center">Versiyon 3.2.1</p>
+            <p className="text-xs text-gray-400 text-center">Version 3.2.1</p>
           </div>
         </div>
       </aside>

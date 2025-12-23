@@ -23,12 +23,12 @@ import {
   Gift,
   Percent
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
-import { Avatar, AvatarFallback } from '../ui/avatar';
-import { Progress } from '../ui/progress';
-import { ScrollArea, ScrollBar } from '../ui/scroll-area';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
+import { Avatar, AvatarFallback } from '../components/ui/avatar';
+import { Progress } from '../components/ui/progress';
+import { ScrollArea, ScrollBar } from '../components/ui/scroll-area';
 import {
   accounts,
   cards,
@@ -39,7 +39,7 @@ import {
   exchangeRates,
   spendingByCategory,
   userData
-} from '../../data/mockData';
+} from '../data/mockData';
 
 const iconMap = {
   'wallet': Wallet,

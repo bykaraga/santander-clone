@@ -37,6 +37,15 @@ export const availableUsers = [
     email: "piotr.wisniewski@email.pl",
     phone: "+48 505 XXX XXX",
     lastLogin: "14 Jul 2025, 18:45"
+  },
+  {
+    id: 4,
+    name: "Batuhan Demirboga",
+    firstName: "Batuhan",
+    avatar: "BD",
+    email: "batuhan.demirboga@email.pl",
+    phone: "+48 530 XXX XXX",
+    lastLogin: "15 Jul 2025, 16:20"
   }
 ];
 
